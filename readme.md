@@ -9,6 +9,13 @@ The module reads time settings through Java and returns a promise to Javascript.
 - yarn
 - yarn android
 
+## :anger: Instructions to test against RNLocalize
+
+- After setup, open the app
+- All configs should show exactly the same thing
+- Open settings without terminating the app, change any time setting
+- Go back to the app, press reload. Native will change, RNLocalize won't.
+
 ## :book: Instructions to use
 
 - Copy `ClockSettingsModule.java` and `ClockSettingsPackage.java` to your project

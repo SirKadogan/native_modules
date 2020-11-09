@@ -7,6 +7,8 @@
  */
 
 import React, {useEffect, useState} from 'react';
+import * as RNLocalize from 'react-native-localize';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -23,13 +25,21 @@ import ClockSettings from './ClockSettings';
 
 const App = () => {
   const [isTimeAuto, setIsTimeAuto] = useState('false');
+  const [isRNTimeAuto, setIsRNTimeAuto] = useState('false');
+
   const [isTimeZoneAuto, setIsTimeZoneAuto] = useState('false');
+  const [isRNTimeZoneAuto, setRNIsTimeZoneAuto] = useState('false');
 
   const loadConfigs = async () => {
     const isTimeAutoResponse = await ClockSettings.getUsesAutoDateAndTime();
     const isTimeAutoZoneResponse = await ClockSettings.getUsesAutoTimeZone();
+
+    const isRNTimeAutoZoneResponse = await RNLocalize.usesAutoTimeZone();
+    const isRNTimeAutoResponse = await RNLocalize.usesAutoDateAndTime();
     setIsTimeAuto(isTimeAutoResponse + '');
+    setIsRNTimeAuto(isRNTimeAutoResponse + '');
     setIsTimeZoneAuto(isTimeAutoZoneResponse + '');
+    setRNIsTimeZoneAuto(isRNTimeAutoZoneResponse + '');
   };
 
   useEffect(() => {
@@ -43,16 +53,18 @@ const App = () => {
       <View style={styles.body}>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Are Time and Date Auto ?</Text>
-          <Text style={styles.sectionDescription}>
-            <Text style={styles.highlight}>{isTimeAuto}</Text>
-          </Text>
+          <View style={styles.sectionDescription}>
+            <Text style={styles.highlight}>Native: {isTimeAuto}</Text>
+            <Text style={styles.highlight}>RNLocalize: {isRNTimeAuto}</Text>
+          </View>
         </View>
 
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Is Time Zone Auto ?</Text>
-          <Text style={styles.sectionDescription}>
-            <Text style={styles.highlight}>{isTimeZoneAuto}</Text>
-          </Text>
+          <View style={styles.sectionDescription}>
+            <Text style={styles.highlight}>Native: {isTimeZoneAuto}</Text>
+            <Text style={styles.highlight}>RNLocalize:{isRNTimeZoneAuto}</Text>
+          </View>
         </View>
         <View style={styles.sectionContainer}>
           <Button
@@ -83,22 +95,24 @@ const styles = StyleSheet.create({
   },
   sectionContainer: {
     marginTop: 32,
-    paddingHorizontal: 24,
     alignItems: 'center',
+    width: '100%',
   },
   sectionTitle: {
+    justifyContent: 'space-around',
     fontSize: 20,
     fontWeight: '600',
     color: Colors.black,
   },
   sectionDescription: {
     marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
+    width: '80%',
+    alignItems: 'center',
   },
   highlight: {
+    fontSize: 18,
     fontWeight: '700',
+    color: Colors.dark,
   },
   footer: {
     color: Colors.dark,
